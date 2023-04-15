@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { getEthereum } from "../utils/ethereum";
 
+export let isWalletConnected: boolean = false;
+
+function getIsWalletConnected() {
+    return isWalletConnected;
+}
+
 export const useWallet = () => {
     const [currentAccount, setCurrentAccount] = useState<string>();
     const ethereum = getEthereum();
@@ -68,6 +74,7 @@ export const useWallet = () => {
             if (!Array.isArray(accounts)) return;
             if (accounts.length !== 0) {
                 const account = accounts[0];
+                isWalletConnected = true;
                 console.log("Found an authorized account:", account);
                 setCurrentAccount(account);
             } else {

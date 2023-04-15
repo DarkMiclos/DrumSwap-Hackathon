@@ -2,10 +2,17 @@ import React from "react";
 import { ethers } from "ethers";
 import contractABI from "../abi/drumfactory.json";
 import { getEthereum } from "../utils/ethereum";
+import TokenSelectionButton from "./TokenSelectionButton";
+import { useRecoilValue } from "recoil";
+import { swapFromTokenState, swapToTokenState } from "../utils/atom";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const contractAdress = "0x802B7cCc3cc79aA41FCb67B9c4e73ec5B121A9d6";
 
 const Swap = () => {
+    const swapFromToken = useRecoilValue(swapFromTokenState);
+    const swapToToken = useRecoilValue(swapToTokenState);
+
     let getContract = () => {
         if(window.ethereum) {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -29,25 +36,27 @@ const Swap = () => {
 
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="card w-[60vw] h-[60vh] shadow-xl">
+            <div className="card w-[60vw] w-min-[60vw] shadow-xl">
             <div className="card-body">
                 <h2 className="card-title justify-center">Swap</h2>
                 <div className="divider"></div>
                 <label className="input-group flex justify-center">
                     <input type="text" placeholder="0.01" className="input input-bordered" />
-                    <select className="select select-bordered">
-                        <option disabled selected>ETH </option>
-                        <option>T-shirts</option>
-                        <option>Mugs</option>
-                    </select>
+                    <TokenSelectionButton
+                        type="from"
+                        className="select select-bordered rounded-sm"
+                    >
+                        {swapFromToken}
+                    </TokenSelectionButton>
                 </label>
                 <label className="input-group flex justify-center">
                     <input type="text" placeholder="0.01" className="input input-bordered" />
-                    <select className="select select-bordered">
-                        <option disabled selected>ETH </option>
-                        <option>T-shirts</option>
-                        <option>Mugs</option>
-                    </select>
+                    <TokenSelectionButton
+                        type="from"
+                        className="select select-bordered rounded-sm"
+                    >
+                        {swapToToken}
+                    </TokenSelectionButton>
                 </label>
                 <div className="divider"></div>
                 <div className="card-actions justify-center">
