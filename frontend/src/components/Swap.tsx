@@ -1,6 +1,32 @@
 import React from "react";
+import { ethers } from "ethers";
+import contractABI from "../abi/drumfactory.json";
+import { getEthereum } from "../utils/ethereum";
+
+const contractAdress = "0x802B7cCc3cc79aA41FCb67B9c4e73ec5B121A9d6";
 
 const Swap = () => {
+    let getContract = () => {
+        if(window.ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            let contract = new ethers.Contract(
+            contractAdress,
+            contractABI,
+            signer
+            );
+            return contract;
+        }
+    }
+
+    let createPair = (tokenAdressA: string, tokenAdressB: string) => {
+        getContract()?.createPair(tokenAdressA, tokenAdressB);
+    }
+
+    let allPairs = () => {
+        console.log(getContract()?.getPair("0xCea5BFE9542eDf828Ebc2ed054CA688f0224796f", "0x16B3b6c340aaB14A6696D66fA1C319B371AFeBd1"));
+    }
+
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="card w-[60vw] h-[60vh] shadow-xl">
@@ -25,7 +51,7 @@ const Swap = () => {
                 </label>
                 <div className="divider"></div>
                 <div className="card-actions justify-center">
-                    <button className="btn btn-primary">Swap</button>
+                    <button className="btn btn-primary" onClick={allPairs}>Swap</button>
                 </div>
             </div>
         </div>

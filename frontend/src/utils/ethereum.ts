@@ -1,12 +1,13 @@
+import { ExternalProvider, JsonRpcFetchFunc } from "@ethersproject/providers";
 import { MetaMaskInpageProvider } from "@metamask/providers"
 
 declare global {
     interface Window {
-        ethereum?: MetaMaskInpageProvider;
+        ethereum?: ExternalProvider;
     }
 }
 
-export const getEthereum = (): MetaMaskInpageProvider | null => {
+export const getEthereum = (): ExternalProvider | null => {
     if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
         const { ethereum } = window;
         return ethereum;
