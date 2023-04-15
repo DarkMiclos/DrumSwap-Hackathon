@@ -5,6 +5,7 @@ import { useDrumFactoryContract } from "./hook/useDrumSwap";
 import ConnectButton from "./components/ConnectButton";
 import Swap from "./components/Swap";
 import Pool from "./pages/Pool";
+import Test from "./pages/Test";
 import Navbar from "./components/Navbar";
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
     <>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Test />} />
         <Route path="/swap" element={<Swap />} />
         <Route path="/pool" element={<Pool />} />
       </Routes>
