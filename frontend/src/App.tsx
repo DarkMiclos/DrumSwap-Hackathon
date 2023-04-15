@@ -1,10 +1,16 @@
 import React from "react";
+import { useWallet } from "./hook/useWallet";
+import ConnectButton from "./components/ConnectButton";
 import Swap from "./components/Swap" 
 
 const App = () => {
   return (
-  <Swap></Swap>
-  );
+    <>
+      <ConnectButton />
+      <Swap></Swap>
+    </>
+    );
+
 };
 
 export default App;
