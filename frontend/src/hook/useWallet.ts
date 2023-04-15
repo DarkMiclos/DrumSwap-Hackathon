@@ -39,8 +39,8 @@ export const useWallet = () => {
             ethereum.request({
                 method: "wallet_addEthereumChain", params: [
                     {
-                        chainId: "0x28C5C",
-                        rpcUrl: "https://rpc.a2.taiko.xyz",
+                        chainId: "0x28C5A",
+                        rpcUrl: "https://l2rpc.hackathon.taiko.xyz",
                     },
                 ],
             })
@@ -55,7 +55,7 @@ export const useWallet = () => {
                 alert("Get MetaMask!");
                 return;
             }
-            ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x28C5C" }] })
+            ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x28C5A" }] })
         } catch (error) {
             console.log(error);
         }
