@@ -1,13 +1,16 @@
-import Pool from "./components/Pool";
-import Navbar from "./components/Navbar";
+import React from "react";
+import { useWallet } from "./hook/useWallet";
+import ConnectButton from "./components/ConnectButton";
+import Swap from "./components/Swap" 
 
 const App = () => {
   return (
     <>
-      <Navbar />
-      <Pool />
+      <ConnectButton />
+      <Swap></Swap>
     </>
-  );
+    );
+
 };
 
 export default App;
