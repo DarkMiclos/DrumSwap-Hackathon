@@ -1,6 +1,6 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { swapFromTokenState, swapToTokenState } from "../utils/atom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 type Props = {
   type: "from" | "to";
@@ -14,9 +14,10 @@ type Token = {
 };
 
 const TokenSelectionButton = ({ type, children, className }: Props) => {
-  const setSwapFromToken = useSetRecoilState(swapFromTokenState);
-  const setSwapToToken = useSetRecoilState(swapToTokenState);
+  const [swapFromToken, setSwapFromToken] = useRecoilState(swapFromTokenState);
+  const [swapToToken, setSwapToToken] = useRecoilState(swapToTokenState);
   const [inputValue, setInputValue] = useState<string>("");
+  const ref = useRef<HTMLInputElement>(null);
 
   const availableTokens: Token[] = [
     {
@@ -27,11 +28,29 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
       name: "Binance Chain Native Token",
       abbreviation: "BNB",
     },
+    {
+      name: "PancakeSwap Token",
+      abbreviation: "CAKE",
+    },
   ];
 
-  const filteredTokes = availableTokens.filter(({ abbreviation }) =>
-    abbreviation.includes(inputValue.toUpperCase())
-  );
+  const filterTokens = (type: "from" | "to") => {
+    if (type === "from") {
+      return availableTokens.filter(
+        ({ abbreviation }) =>
+          abbreviation.includes(inputValue.toUpperCase()) &&
+          abbreviation !== swapFromToken
+      );
+    } else if (type === "to") {
+      return availableTokens.filter(
+        ({ abbreviation }) =>
+          abbreviation.includes(inputValue.toUpperCase()) &&
+          abbreviation !== swapToToken
+      );
+    } else {
+      return [];
+    }
+  };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const abbreviation = e.currentTarget.textContent;
@@ -41,6 +60,7 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
     } else if (type === "to") {
       setSwapToToken(abbreviation);
     }
+    ref.current!.checked = false;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,11 +70,14 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
   if (type === "from") {
     return (
       <>
+        {/* Button */}
         <label htmlFor="FromTokenSelectionModal" className={className}>
           {children}
         </label>
 
+        {/* Modal */}
         <input
+          ref={ref}
           type="checkbox"
           id="FromTokenSelectionModal"
           className="modal-toggle"
@@ -74,26 +97,15 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
               className="input input-bordered w-full my-5"
             />
             <div className="py-4">
-              {inputValue === "" &&
-                availableTokens.map(({ abbreviation }, index) => (
-                  <button
-                    key={index}
-                    onClick={handleClick}
-                    className="btn w-full"
-                  >
-                    {abbreviation}
-                  </button>
-                ))}
-              {inputValue !== "" &&
-                filteredTokes.map(({ abbreviation }, index) => (
-                  <button
-                    key={index}
-                    onClick={handleClick}
-                    className="btn w-full"
-                  >
-                    {abbreviation}
-                  </button>
-                ))}
+              {filterTokens("from").map(({ abbreviation }, index) => (
+                <button
+                  key={index}
+                  onClick={handleClick}
+                  className="btn w-full"
+                >
+                  {abbreviation}
+                </button>
+              ))}
             </div>
           </label>
         </label>
@@ -102,11 +114,14 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
   } else if (type === "to") {
     return (
       <>
+        {/* Button */}
         <label htmlFor="ToTokenSelectionModal" className={className}>
           {children}
         </label>
 
+        {/* Modal */}
         <input
+          ref={ref}
           type="checkbox"
           id="ToTokenSelectionModal"
           className="modal-toggle"
@@ -123,26 +138,15 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
               className="input input-bordered w-full my-5"
             />
             <div className="py-4">
-              {inputValue === "" &&
-                availableTokens.map(({ abbreviation }, index) => (
-                  <button
-                    key={index}
-                    onClick={handleClick}
-                    className="btn w-full"
-                  >
-                    {abbreviation}
-                  </button>
-                ))}
-              {inputValue !== "" &&
-                filteredTokes.map(({ abbreviation }, index) => (
-                  <button
-                    key={index}
-                    onClick={handleClick}
-                    className="btn w-full"
-                  >
-                    {abbreviation}
-                  </button>
-                ))}
+              {filterTokens("to").map(({ abbreviation }, index) => (
+                <button
+                  key={index}
+                  onClick={handleClick}
+                  className="btn w-full"
+                >
+                  {abbreviation}
+                </button>
+              ))}
             </div>
           </label>
         </label>

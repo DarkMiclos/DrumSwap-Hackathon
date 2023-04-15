@@ -27,7 +27,7 @@ const Pool = () => {
             {swapFromToken}
             <IoMdArrowDropdown size={24} />
           </TokenSelectionButton>
-
+          
           <TokenSelectionButton
             type="to"
             className="btn btn-sm btn-secondary w-[40%] float-right mx-3"
@@ -35,6 +35,7 @@ const Pool = () => {
             {swapToToken}
             <IoMdArrowDropdown size={24} />
           </TokenSelectionButton>
+          <div className="clear-right" />
         </div>
       </div>
       <div className="w-full h-[calc(100%-40px)] bg-[#08060b] rounded-2xl">
