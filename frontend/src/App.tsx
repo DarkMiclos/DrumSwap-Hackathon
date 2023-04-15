@@ -15,14 +15,10 @@ const App = () => {
 
   const handleClick = async () => {
     console.log("test");
-    await getPair("0x242a1ff6ee06f2131b7924cacb74c7f9e3a5edc9");
-    console.log("done");
-    // await swap(
-    //   0.000_000_001,
-    //   0.000_000_001,
-    //   "0x5e69f63eC6F746A7E9753b3991231444a81DE685",
-    //   10
-    // );
+    await createPair(
+      "0x242a1ff6ee06f2131b7924cacb74c7f9e3a5edc9",
+      "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+    );
   };
 
   return (

@@ -1,11 +1,14 @@
 import React from "react";
-import { ethers } from "ethers";
-import contractABI from "../abi/drumfactory.json";
-import { getEthereum } from "../utils/ethereum";
+import { Overrides, ethers } from "ethers";
+import contractABI from "../utils/abi.json";
+import { useWallet } from "../hook/useWallet";
 
-const contractAddress = "0x802B7cCc3cc79aA41FCb67B9c4e73ec5B121A9d6";
+const contractAddress = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
+const usdtAddress = "0x9b75777bbb43ce39f80B33eEeaCb54141f90c4f8";
+const drumAddress = "0xfC605CB680AfDf4FA4B2222010668013929a3F3F";
 
 const Swap = () => {
+  const { currentAccount } = useWallet();
   const getContract = () => {
     if (window.ethereum) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -15,16 +18,22 @@ const Swap = () => {
     }
   };
 
-  const createPair = (tokenAddressA: string, tokenAddressB: string) => {
-    getContract()?.createPair(tokenAddressA, tokenAddressB);
-  };
-
-  const allPairs = async () => {
-    const pair = await getContract()?.getPair(
-      "0xCea5BFE9542eDf828Ebc2ed054CA688f0224796f",
-      "0x16B3b6c340aaB14A6696D66fA1C319B371AFeBd1"
+  const swapExactTokensForTokens = async (
+    amountIn: number,
+    amountOutMin: number,
+    path: string[],
+    to: string,
+    deadline: number,
+    overrides: Overrides
+  ) => {
+    await getContract()?.swapExactTokensForTokens(
+      amountIn,
+      amountOutMin,
+      path,
+      to,
+      deadline,
+      overrides
     );
-    console.log(pair);
   };
 
   return (
@@ -63,7 +72,21 @@ const Swap = () => {
           </label>
           <div className="divider"></div>
           <div className="card-actions justify-center">
-            <button className="btn btn-primary" onClick={allPairs}>
+            <button
+              className="btn btn-primary"
+              onClick={() =>
+                swapExactTokensForTokens(
+                  10000,
+                  0,
+                  [drumAddress, usdtAddress],
+                  currentAccount as string,
+                  Math.floor(Date.now() / 1000) + 60 * 5,
+                  {
+                    gasLimit: 5900000,
+                  }
+                )
+              }
+            >
               Swap
             </button>
           </div>

@@ -37,10 +37,10 @@ export const useDrumFactoryContract = ({ currentAccount }: Props) => {
         }
     }
 
-    const getPair = async (token: string) => {
+    const getPair = async (tokenA: string, tokenB: string) => {
         try {
             if (!ethereum) return;
-            const txn = await drumFactoryContract?.getPair(token);
+            const txn = await drumFactoryContract?.getPair(tokenA, tokenB);
             await txn.wait();
             console.log("done");
         } catch (err) {
