@@ -9,17 +9,17 @@ const Pool = () => {
   const swapToToken = useRecoilValue(swapToTokenState);
   const [feeTier, setFeeTier] = useState<number>(0);
 
-  const feeTiers = ["0.01%", "0.05%", "0.25%", "1%"];
+  const feeTiers = ["0.01%", "0.05%", "0.25%", "1%", "optional"];
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setFeeTier(Number(e.currentTarget.id));
   };
 
   return (
-    <div className="w-[400px] h-[200px] rounded-2xl m-10">
+    <div className="w-[400px] rounded-2xl mx-auto">
       {/* Select tokens */}
-      <div className="relative w-full h-[40px]">
-        <div className="absolute top-0 bottom-0 w-full h-[32px] my-auto">
+      <div className=" w-full h-[40px]">
+        <div className=" w-full h-[32px] my-auto">
           <TokenSelectionButton
             type="from"
             className="btn btn-sm btn-secondary w-[40%] mx-3"
@@ -27,7 +27,7 @@ const Pool = () => {
             {swapFromToken}
             <IoMdArrowDropdown size={24} />
           </TokenSelectionButton>
-          
+
           <TokenSelectionButton
             type="to"
             className="btn btn-sm btn-secondary w-[40%] float-right mx-3"
@@ -40,8 +40,9 @@ const Pool = () => {
       </div>
       <div className="w-full h-[calc(100%-40px)] bg-[#08060b] rounded-2xl">
         {/* Select fees */}
-        <div className="relative h-[calc(100%-60px)]">
-          <div className="absolute grid grid-cols-4 w-full h-[48px] top-0 bottom-0 my-auto">
+        <h3 className="text-md ml-3 mt-2 leading-10">Select Slippage</h3>
+        <div className="h-full">
+          <div className=" grid grid-cols-4 w-[90%] mx-auto h-fit bottom-[10px]">
             {feeTiers.map((fee, index) => (
               <button
                 key={index}
@@ -49,17 +50,25 @@ const Pool = () => {
                 onClick={handleClick}
                 className={`btn ${
                   feeTier === index ? "btn-secondary" : ""
-                } no-animation w-[78px] mx-auto`}
+                } no-animation w-[78px] mx-auto my-1`}
               >
                 {fee}
               </button>
             ))}
           </div>
-        </div>
-        <div className="relative w-full h-[48px]">
-          <button className="absolute btn btn-ghost w-[90%] left-0 right-0 mx-auto mb-5">
+          {feeTier === 4 && (
+            <div className="text-center">
+              <input
+                type="text"
+                className="input input-secondary my-3 w-[90%]"
+                placeholder="type slippage"
+              />
+            </div>
+          )}
+
+          {/* <button className="absolute btn btn-ghost w-[90%] left-0 right-0 bottom-0 mx-auto">
             Add Liquidity
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
