@@ -1,6 +1,10 @@
 import { useWallet } from "../hook/useWallet";
 
-const ConnectButton = () => {
+type Props = {
+  className?: string;
+};
+
+const ConnectButton = ({ className }: Props) => {
   const { connectWallet } = useWallet();
 
   const handleClick = () => {
@@ -8,7 +12,7 @@ const ConnectButton = () => {
   };
 
   return (
-    <button onClick={handleClick} className="btn btn-primary">
+    <button onClick={handleClick} className={`btn btn-primary ${className}`}>
       Connect
     </button>
   );
