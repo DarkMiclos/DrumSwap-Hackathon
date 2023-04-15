@@ -1,6 +1,5 @@
 import React from "react";
 import { useWallet } from "./hook/useWallet";
-import { useDrumFactoryContract } from "./hook/useDrumFactory";
 import ConnectButton from "./components/ConnectButton";
 import Swap from "./components/Swap";
 
