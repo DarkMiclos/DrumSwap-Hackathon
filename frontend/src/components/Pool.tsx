@@ -2,10 +2,18 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import TokenSelectionButton from "./TokenSelectionButton";
 import { useRecoilValue } from "recoil";
 import { swapFromTokenState, swapToTokenState } from "../utils/atom";
+import { useState } from "react";
 
 const Pool = () => {
   const swapFromToken = useRecoilValue(swapFromTokenState);
   const swapToToken = useRecoilValue(swapToTokenState);
+  const [feeTier, setFeeTier] = useState<number>(0);
+
+  const feeTiers = ["0.01%", "0.05%", "0.25%", "1%"];
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setFeeTier(Number(e.currentTarget.id));
+  };
 
   return (
     <div className="w-[400px] h-[200px] rounded-2xl m-10">
@@ -19,7 +27,7 @@ const Pool = () => {
             {swapFromToken}
             <IoMdArrowDropdown size={24} />
           </TokenSelectionButton>
-          
+
           <TokenSelectionButton
             type="to"
             className="btn btn-sm btn-secondary w-[40%] float-right mx-3"
@@ -33,16 +41,18 @@ const Pool = () => {
         {/* Select fees */}
         <div className="relative h-[calc(100%-60px)]">
           <div className="absolute grid grid-cols-4 w-full h-[48px] top-0 bottom-0 my-auto">
-            <button className="btn btn-secondary w-[78px] mx-auto">
-              0.01%
-            </button>
-            <button className="btn btn-secondary w-[78px] mx-auto">
-              0.05%
-            </button>
-            <button className="btn btn-secondary w-[78px] mx-auto">
-              0.25%
-            </button>
-            <button className="btn btn-secondary w-[78px] mx-auto">1%</button>
+            {feeTiers.map((fee, index) => (
+              <button
+                key={index}
+                id={index.toString()}
+                onClick={handleClick}
+                className={`btn ${
+                  feeTier === index ? "btn-secondary" : ""
+                } no-animation w-[78px] mx-auto`}
+              >
+                {fee}
+              </button>
+            ))}
           </div>
         </div>
         <div className="relative w-full h-[48px]">
