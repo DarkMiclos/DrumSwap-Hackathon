@@ -172,8 +172,6 @@ const Swap = () => {
                     fromTokenAmount,
                     toTokenAmount,
                     [
-                      drumAddress,
-                      usdtAddress,
                       tokenNameToAddress[swapFromToken],
                       tokenNameToAddress[swapToToken],
                     ],
