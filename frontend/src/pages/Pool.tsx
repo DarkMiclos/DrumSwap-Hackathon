@@ -189,26 +189,6 @@ const Pool = () => {
                 Add Liquidity
               </button>
             )}
-            {/* <button
-              className="btn btn-primary"
-              onClick={() =>
-                addLiquidity(
-                  tokenNameToAddress[swapFromToken],
-                  tokenNameToAddress[swapToToken],
-                  ethers.utils.parseEther(fromTokenAmount.toString()),
-                  ethers.utils.parseEther(toTokenAmount.toString()),
-                  0,
-                  0,
-                  currentAccount,
-                  Math.floor(Date.now() / 1000) + 60 * 10,
-                  {
-                    gasLimit: 4000000,
-                  }
-                )
-              }
-            >
-              Add Liquidity
-            </button> */}
           </div>
         </div>
       </div>
