@@ -20,8 +20,6 @@ const App = () => {
         <Route path="/swap" element={<Swap />} />
         <Route path="/pool" element={<Pool />} />
       </Routes>
-      <ConnectButton />
-      <Swap></Swap>
     </>
   );
 };
