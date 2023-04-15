@@ -17,6 +17,11 @@ const Pool = () => {
   const [fromTokenAmount, setFromTokenAmount] = useState(0);
   const [toTokenAmount, setToTokenAmount] = useState(0);
 
+  const tokenNameToAddress = {
+    USDT: usdtTokenAddress,
+    DRM: drumTokenAddress,
+  };
+
   let signer: any;
 
   let getRouterContract = () => {
@@ -40,7 +45,7 @@ const Pool = () => {
     setToTokenAmount(Number(e.currentTarget.value));
   };
 
-  let addLiquidity = async (
+  const addLiquidity = async (
     tokenAddressA: string | undefined,
     tokenAddressB: string | undefined,
     amountADesired: BigNumber | undefined,
@@ -59,6 +64,28 @@ const Pool = () => {
         amountBDesired,
         amountAMin,
         amountBMin,
+        to,
+        deadline,
+        gasLimit
+      )
+      .then(() => console.log());
+  };
+
+  const addLiquidityETH = async (
+    token: string,
+    amountTokenDesired: BigNumber | undefined,
+    amountTokenMin: number | undefined,
+    amountETHMin: number | undefined,
+    to: string | undefined,
+    deadline: any,
+    gasLimit: any
+  ) => {
+    getRouterContract()
+      ?.addLiquidityETH(
+        token,
+        amountTokenDesired,
+        amountTokenMin,
+        amountETHMin,
         to,
         deadline,
         gasLimit
@@ -102,12 +129,72 @@ const Pool = () => {
           </label>
           <div className="divider"></div>
           <div className="card-actions justify-center">
-            <button
+            {swapToToken === "ETH" ? (
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  addLiquidityETH(
+                    tokenNameToAddress[swapFromToken],
+                    ethers.utils.parseEther(toTokenAmount.toString()),
+                    0,
+                    0,
+                    currentAccount,
+                    Math.floor(Date.now() / 1000) + 60 * 10,
+                    {
+                      gasLimit: 4000000,
+                    }
+                  )
+                }
+              >
+                Add Liquidity
+              </button>
+            ) : swapFromToken === "ETH" ? (
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  addLiquidityETH(
+                    tokenNameToAddress[swapToToken],
+                    ethers.utils.parseEther(fromTokenAmount.toString()),
+                    0,
+                    0,
+                    currentAccount,
+                    Math.floor(Date.now() / 1000) + 60 * 10,
+                    {
+                      gasLimit: 4000000,
+                    }
+                  )
+                }
+              >
+                Add Liquidity
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  addLiquidity(
+                    tokenNameToAddress[swapFromToken],
+                    tokenNameToAddress[swapToToken],
+                    ethers.utils.parseEther(fromTokenAmount.toString()),
+                    ethers.utils.parseEther(toTokenAmount.toString()),
+                    0,
+                    0,
+                    currentAccount,
+                    Math.floor(Date.now() / 1000) + 60 * 10,
+                    {
+                      gasLimit: 4000000,
+                    }
+                  )
+                }
+              >
+                Add Liquidity
+              </button>
+            )}
+            {/* <button
               className="btn btn-primary"
               onClick={() =>
                 addLiquidity(
-                  usdtTokenAddress,
-                  drumTokenAddress,
+                  tokenNameToAddress[swapFromToken],
+                  tokenNameToAddress[swapToToken],
                   ethers.utils.parseEther(fromTokenAmount.toString()),
                   ethers.utils.parseEther(toTokenAmount.toString()),
                   0,
@@ -121,7 +208,7 @@ const Pool = () => {
               }
             >
               Add Liquidity
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

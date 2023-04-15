@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Swap from "./components/Swap";
+import Swap from "./pages/Swap";
 import Pool from "./pages/Pool";
 import Navbar from "./components/Navbar";
 

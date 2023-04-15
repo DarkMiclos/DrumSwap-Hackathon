@@ -26,7 +26,7 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
     },
     {
       name: "Drum",
-      abbreviation: "DRUM",
+      abbreviation: "DRM",
     },
     {
       name: "Tether",

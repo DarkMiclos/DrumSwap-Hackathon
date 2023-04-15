@@ -7,5 +7,5 @@ export const swapFromTokenState = atom({
 
 export const swapToTokenState = atom({
     key: "swapToToken",
-    default: "DRUM"
+    default: "DRM"
 });
