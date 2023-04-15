@@ -1,7 +1,10 @@
 import React from "react";
+import Swap from "./components/Swap" 
 
 const App = () => {
-  return <div className="text-red-500">DrumSwap</div>;
+  return (
+  <Swap></Swap>
+  );
 };
 
 export default App;
