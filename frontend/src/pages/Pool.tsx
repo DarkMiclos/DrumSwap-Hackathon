@@ -1,35 +1,75 @@
 import React from "react";
-import { ethers } from "ethers";
-import contractABI from "../abi/drumfactory.json";
+import { BigNumber, ethers } from "ethers";
+import routerContractABI from "../abi/router.json";
+import usdtAbi from "../abi/usdt.json";
 import { swapFromTokenState, swapToTokenState } from "../utils/atom";
 import TokenSelectionButton from "../components/TokenSelectionButton";
 import { useRecoilValue } from "recoil";
+import { useWallet } from "../hook/useWallet";
 
-const contractAdress = "0x802B7cCc3cc79aA41FCb67B9c4e73ec5B121A9d6";
+const routerContractAdress = "0x46098Af079142A0D03e224597E74C758f6c6B2d3";
+const usdtTokenAdress = "0x9b75777bbb43ce39f80B33eEeaCb54141f90c4f8";
+const drumTokenAdress = "0xfC605CB680AfDf4FA4B2222010668013929a3F3F";
 
 const Pool = () => {
     const swapFromToken = useRecoilValue(swapFromTokenState);
     const swapToToken = useRecoilValue(swapToTokenState);
+    const usdtAmount = ethers.utils.parseEther("1000");
+    const drumAmount = ethers.utils.parseEther("1000");
+    const { currentAccount } = useWallet();
+    let signer: any;
 
-    let getContract = () => {
+    let getRouterContract = () => {
         if(window.ethereum) {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
+            signer = provider.getSigner();
             let contract = new ethers.Contract(
-            contractAdress,
-            contractABI,
+            routerContractAdress,
+            routerContractABI,
             signer
             );
             return contract;
         }
     }
 
-    let createPair = (tokenAdressA: string, tokenAdressB: string) => {
-        getContract()?.createPair(tokenAdressA, tokenAdressB);
+    let getUsdtContract = () => {
+        if(window.ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            signer = provider.getSigner();
+            let contract = new ethers.Contract(
+            usdtTokenAdress,
+            usdtAbi,
+            signer
+            );
+            return contract;
+        }
     }
 
-    let allPairs = () => {
-        console.log(getContract()?.getPair("0xCea5BFE9542eDf828Ebc2ed054CA688f0224796f", "0x16B3b6c340aaB14A6696D66fA1C319B371AFeBd1"));
+    let getDrumContract = () => {
+        if(window.ethereum) {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            signer = provider.getSigner();
+            let contract = new ethers.Contract(
+            drumTokenAdress,
+            usdtAbi,
+            signer
+            );
+            return contract;
+        }
+    }
+
+    let addLiquidity = async (tokenAdressA: string | undefined, tokenAdressB: string | undefined, amountADesired: BigNumber | undefined,
+         amountBDesired: BigNumber | undefined, amountAMin: number | undefined,
+        amountBMin: number | undefined, to: string | undefined,  deadline: any, gasLimit: any ) => {
+        /*await getUsdtContract()?.approve(getRouterContract()?.address, usdtAmount,{
+            gasLimit: 5900000
+            });
+        await getDrumContract()?.approve(getRouterContract()?.address, drumAmount,{
+        gasLimit: 5900000
+        });*/
+        getRouterContract()?.addLiquidity(tokenAdressA, tokenAdressB, amountADesired, amountBDesired, amountAMin, amountBMin, to, deadline, gasLimit)
+        .then(() => console.log())
+    ;
     }
 
     return (
@@ -58,7 +98,12 @@ const Pool = () => {
                 </label>
                 <div className="divider"></div>
                 <div className="card-actions justify-center">
-                    <button className="btn btn-primary" onClick={allPairs}>Add Liquidity</button>
+                    <button className="btn btn-primary" onClick={() => addLiquidity(usdtTokenAdress, 
+                        drumTokenAdress, usdtAmount, drumAmount, 0, 0, currentAccount, Math.floor(Date.now() / 1000) + 60 * 10,
+                        {
+                            gasLimit: 4000000
+                        }
+                        )}>Add Liquidity</button>
                 </div>
             </div>
         </div>
