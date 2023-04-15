@@ -1,11 +1,11 @@
-import { useWallet } from "./hook/useWallet";
-import ConnectButton from "./components/ConnectButton";
+import Pool from "./components/Pool";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <>
-      <div className="text-red-500">DrumSwap</div>
-      <ConnectButton />
+      <Navbar />
+      <Pool />
     </>
   );
 };
