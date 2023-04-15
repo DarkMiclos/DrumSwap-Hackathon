@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { getEthereum } from "../utils/ethereum";
 
+export let isWalletConnected: boolean = false;
+
+function getIsWalletConnected() {
+    return isWalletConnected;
+}
+
 export const useWallet = () => {
     const [currentAccount, setCurrentAccount] = useState<string>();
     const ethereum = getEthereum();
@@ -33,8 +39,8 @@ export const useWallet = () => {
             ethereum.request({
                 method: "wallet_addEthereumChain", params: [
                     {
-                        chainId: "0xaa36a7",
-                        rpcUrl: "https://rpc2.sepolia.org",
+                        chainId: "0x28C5A",
+                        rpcUrl: "https://l2rpc.hackathon.taiko.xyz",
                     },
                 ],
             })
@@ -49,7 +55,7 @@ export const useWallet = () => {
                 alert("Get MetaMask!");
                 return;
             }
-            ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0xaa36a7" }] })
+            ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x28C5A" }] })
         } catch (error) {
             console.log(error);
         }
@@ -68,6 +74,7 @@ export const useWallet = () => {
             if (!Array.isArray(accounts)) return;
             if (accounts.length !== 0) {
                 const account = accounts[0];
+                isWalletConnected = true;
                 console.log("Found an authorized account:", account);
                 setCurrentAccount(account);
             } else {

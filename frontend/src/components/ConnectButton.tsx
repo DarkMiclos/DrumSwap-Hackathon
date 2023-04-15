@@ -1,4 +1,4 @@
-import { useWallet } from "../hook/useWallet";
+import { useWallet, isWalletConnected } from "../hook/useWallet";
 
 type Props = {
   className?: string;
@@ -10,12 +10,23 @@ const ConnectButton = ({ className }: Props) => {
   const handleClick = () => {
     connectWallet();
   };
-
-  return (
-    <button onClick={handleClick} className={`btn btn-primary ${className}`}>
-      Connect
-    </button>
-  );
+  if(isWalletConnected) {
+    return (
+      <div className="float-right">
+        <button className={`btn btn-primary ${className}`}>
+        Disconnect
+      </button>
+      </div>
+    );
+  }
+  else {
+    return (
+    
+      <button onClick={handleClick} className={`btn float-right btn-primary ${className}`}>
+        Connect
+      </button>
+    );
+  }
 };
 
 export default ConnectButton;
