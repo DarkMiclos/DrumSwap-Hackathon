@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Overrides, ethers } from "ethers";
 import contractABI from "../utils/abi.json";
 import { useWallet } from "../hook/useWallet";
@@ -9,6 +9,9 @@ const drumAddress = "0xfC605CB680AfDf4FA4B2222010668013929a3F3F";
 
 const Swap = () => {
   const { currentAccount } = useWallet();
+  const [fromTokenAmount, setFromTokenAmount] = useState(0);
+  const [toTokenAmount, setToTokenAmount] = useState(0);
+
   const getContract = () => {
     if (window.ethereum) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -36,6 +39,14 @@ const Swap = () => {
     );
   };
 
+  const handleChangeFromAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFromTokenAmount(Number(e.currentTarget.value));
+  };
+
+  const handleChangeToAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setToTokenAmount(Number(e.currentTarget.value));
+  };
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="card w-[60vw] h-[60vh] shadow-xl">
@@ -44,31 +55,19 @@ const Swap = () => {
           <div className="divider"></div>
           <label className="input-group flex justify-center">
             <input
+              onChange={handleChangeFromAmount}
               type="text"
               placeholder="0.01"
               className="input input-bordered"
             />
-            <select className="select select-bordered">
-              <option disabled selected>
-                ETH{" "}
-              </option>
-              <option>T-shirts</option>
-              <option>Mugs</option>
-            </select>
           </label>
           <label className="input-group flex justify-center">
             <input
+              onChange={handleChangeToAmount}
               type="text"
               placeholder="0.01"
               className="input input-bordered"
             />
-            <select className="select select-bordered">
-              <option disabled selected>
-                ETH{" "}
-              </option>
-              <option>T-shirts</option>
-              <option>Mugs</option>
-            </select>
           </label>
           <div className="divider"></div>
           <div className="card-actions justify-center">
@@ -76,8 +75,8 @@ const Swap = () => {
               className="btn btn-primary"
               onClick={() =>
                 swapExactTokensForTokens(
-                  10000,
-                  0,
+                  fromTokenAmount,
+                  toTokenAmount,
                   [drumAddress, usdtAddress],
                   currentAccount as string,
                   Math.floor(Date.now() / 1000) + 60 * 5,

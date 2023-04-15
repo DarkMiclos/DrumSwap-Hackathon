@@ -25,12 +25,12 @@ const TokenSelectionButton = ({ type, children, className }: Props) => {
       abbreviation: "ETH",
     },
     {
-      name: "Binance Chain Native Token",
-      abbreviation: "BNB",
+      name: "Drum",
+      abbreviation: "DRUM",
     },
     {
-      name: "PancakeSwap Token",
-      abbreviation: "CAKE",
+      name: "Tether",
+      abbreviation: "USDT",
     },
   ];
 
