@@ -1,5 +1,5 @@
 import { IoMdArrowDropdown } from "react-icons/io";
-import TokenSelectionButton from "./TokenSelectionButton";
+import TokenSelectionButton from "../components/TokenSelectionButton";
 import { useRecoilValue } from "recoil";
 import { swapFromTokenState, swapToTokenState } from "../utils/atom";
 import { useState } from "react";
