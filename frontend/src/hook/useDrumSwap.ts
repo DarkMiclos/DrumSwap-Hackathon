@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const useDrumFactoryContract = ({ currentAccount }: Props) => {
-    const [drumFactoryContract, setDrumFactoryContract] = useState();
+    const [drumFactoryContract, setDrumFactoryContract] = useState<ethers.Contract>();
     const ethereum = getEthereum();
 
     const getDrumFactory = () => {
@@ -29,7 +29,7 @@ export const useDrumFactoryContract = ({ currentAccount }: Props) => {
     const createPair = async (tokenA: string, tokenB: string) => {
         try {
             if (!ethereum) return;
-            const txn = await drumFactoryContract.createPair(tokenA, tokenB);
+            const txn = await drumFactoryContract?.createPair(tokenA, tokenB);
             await txn.wait();
             console.log("done");
         } catch (err) {
@@ -37,28 +37,27 @@ export const useDrumFactoryContract = ({ currentAccount }: Props) => {
         }
     }
 
-    // dataの方がわからん。
+    const getPair = async (token: string) => {
+        try {
+            if (!ethereum) return;
+            const txn = await drumFactoryContract?.getPair(token);
+            await txn.wait();
+            console.log("done");
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     const swap = async (amount0Out: number, amount1Out: number, to: string, data: number) => {
         try {
             if (!ethereum) return;
-            const txn = await drumFactoryContract.swap(amount0Out, amount1Out, to, data);
+            const txn = await drumFactoryContract?.swap(amount0Out, amount1Out, to, data);
             await txn.wait();
             console.log("done");
         } catch (err) {
             console.log(err);
         }
     }
-
-    // const getPair = async (token: string) => {
-    //     try {
-    //         if (!ethereum) return;
-    //         cawait drumFactoryContract.getPair(token);
-    //         await txn.wait();
-    //         console.log("done");
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
 
     useEffect(() => {
         getDrumFactory()
@@ -66,6 +65,7 @@ export const useDrumFactoryContract = ({ currentAccount }: Props) => {
 
     return {
         createPair,
+        getPair,
         swap
     }
 }
