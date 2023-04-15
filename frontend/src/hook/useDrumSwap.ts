@@ -37,11 +37,35 @@ export const useDrumFactoryContract = ({ currentAccount }: Props) => {
         }
     }
 
+    // dataの方がわからん。
+    const swap = async (amount0Out: number, amount1Out: number, to: string, data: number) => {
+        try {
+            if (!ethereum) return;
+            const txn = await drumFactoryContract.swap(amount0Out, amount1Out, to, data);
+            await txn.wait();
+            console.log("done");
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // const getPair = async (token: string) => {
+    //     try {
+    //         if (!ethereum) return;
+    //         cawait drumFactoryContract.getPair(token);
+    //         await txn.wait();
+    //         console.log("done");
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
+
     useEffect(() => {
         getDrumFactory()
     }, [currentAccount, ethereum]);
 
     return {
         createPair,
+        swap
     }
 }
